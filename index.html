@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scientific Calculator</title>
+    <style>
+      :root {
+        --panel: rgba(10, 24, 39, 0.74);
+        --text: #f8fbff;
+        --muted: #9fb3c8;
+        --accent: #4fc3f7;
+        --accent-2: #7c4dff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        display: grid;
+        place-items: center;
+        padding: 20px;
+        color: var(--text);
+        background:
+          linear-gradient(135deg, rgba(11, 20, 34, 0.65), rgba(80, 125, 164, 0.25)),
+          url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80") center/cover no-repeat;
+      }
+
+      .page {
+        width: min(100%, 980px);
+        background: var(--panel);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+        border-radius: 24px;
+        overflow: hidden;
+      }
+
+      .topbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 18px 24px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .title {
+        font-size: 1.4rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+      }
+
+      .actions button {
+        border: 0;
+        padding: 10px 16px;
+        margin-left: 10px;
+        border-radius: 999px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+
+      .actions button:hover {
+        transform: translateY(-1px);
+      }
+
+      .login {
+        background: rgba(255, 255, 255, 0.18);
+        color: var(--text);
+      }
+
+      .signup {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: white;
+        box-shadow: 0 8px 20px rgba(79, 195, 247, 0.25);
+      }
+
+      .content {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 24px;
+        padding: 24px;
+      }
+
+      .panel {
+        background: rgba(10, 24, 39, 0.46);
+        border-radius: 20px;
+        padding: 20px;
+      }
+
+      .display {
+        width: 100%;
+        padding: 16px;
+        font-size: 1.45rem;
+        border: 0;
+        border-radius: 16px;
+        text-align: right;
+        background: rgba(255, 255, 255, 0.12);
+        color: white;
+        margin-bottom: 16px;
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+      }
+
+      .buttons button {
+        border: 0;
+        min-height: 54px;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 700;
+        cursor: pointer;
+        color: white;
+        background: rgba(255, 255, 255, 0.12);
+        transition: background 0.2s ease, transform 0.2s ease;
+      }
+
+      .buttons button:hover {
+        background: rgba(255, 255, 255, 0.22);
+        transform: translateY(-1px);
+      }
+
+      .buttons .operator {
+        background: linear-gradient(135deg, #ffb347, #ff7f50);
+      }
+
+      .buttons .equal {
+        background: linear-gradient(135deg, #4fc3f7, #5a67d8);
+      }
+
+      .info {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .info-card {
+        padding: 16px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .info-card h3 {
+        margin: 0 0 8px;
+        font-size: 1rem;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      @media (max-width: 800px) {
+        .content {
+          grid-template-columns: 1fr;
+        }
+
+        .topbar {
+          flex-direction: column;
+          gap: 12px;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="topbar">
+        <div class="title">Scientific Calculator</div>
+        <div class="actions">
+          <button class="login">Login</button>
+          <button class="signup">Sign Up</button>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="panel">
+          <input id="display" class="display" value="0" readonly />
+          <div class="buttons">
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="appendValue('(')">(</button>
+            <button onclick="appendValue(')')">)</button>
+            <button onclick="appendValue('%')">%</button>
+            <button class="operator" onclick="appendValue('/')">÷</button>
+
+            <button onclick="appendValue('7')">7</button>
+            <button onclick="appendValue('8')">8</button>
+            <button onclick="appendValue('9')">9</button>
+            <button onclick="appendValue('^')">xʸ</button>
+            <button class="operator" onclick="appendValue('*')">×</button>
+
+            <button onclick="appendValue('4')">4</button>
+            <button onclick="appendValue('5')">5</button>
+            <button onclick="appendValue('6')">6</button>
+            <button onclick="appendValue('sqrt(')">√</button>
+            <button class="operator" onclick="appendValue('-')">−</button>
+
+            <button onclick="appendValue('1')">1</button>
+            <button onclick="appendValue('2')">2</button>
+            <button onclick="appendValue('3')">3</button>
+            <button onclick="appendValue('pi')">π</button>
+            <button class="operator" onclick="appendValue('+')">+</button>
+
+            <button onclick="appendValue('0')">0</button>
+            <button onclick="appendValue('.')">.</button>
+            <button onclick="appendValue('sin(')">sin</button>
+            <button onclick="appendValue('cos(')">cos</button>
+            <button class="equal" onclick="calculateResult()">=</button>
+
+            <button onclick="appendValue('tan(')">tan</button>
+            <button onclick="appendValue('log(')">log</button>
+            <button onclick="appendValue('ln(')">ln</button>
+            <button onclick="appendValue('e')">e</button>
+            <button onclick="backspace()">⌫</button>
+          </div>
+        </div>
+
+        <div class="info">
+          <div class="info-card">
+            <h3>Explore with ease</h3>
+            <p>Perform quick calculations with a modern scientific layout designed for everyday science and math tasks.</p>
+          </div>
+          <div class="info-card">
+            <h3>Fast and flexible</h3>
+            <p>Supports common operations, trigonometry, logarithms, and constants like π and e.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const display = document.getElementById('display');
+
+      function appendValue(value) {
+        const current = display.value;
+        if (current === '0' && value !== '.') {
+          display.value = value;
+        } else {
+          display.value += value;
+        }
+      }
+
+      function clearDisplay() {
+        display.value = '0';
+      }
+
+      function backspace() {
+        const current = display.value;
+        display.value = current.length <= 1 ? '0' : current.slice(0, -1);
+      }
+
+      function calculateResult() {
+        try {
+          let expression = display.value;
+          expression = expression.replace(/pi/g, 'Math.PI');
+          expression = expression.replace(/e/g, 'Math.E');
+          expression = expression.replace(/sqrt\(/g, 'Math.sqrt(');
+          expression = expression.replace(/sin\(/g, 'Math.sin(');
+          expression = expression.replace(/cos\(/g, 'Math.cos(');
+          expression = expression.replace(/tan\(/g, 'Math.tan(');
+          expression = expression.replace(/log\(/g, 'Math.log10(');
+          expression = expression.replace(/ln\(/g, 'Math.log(');
+          expression = expression.replace(/\^/g, '**');
+          const result = Function(`"use strict"; return (${expression})`)();
+          display.value = Number.isFinite(result) ? result : 'Error';
+        } catch (error) {
+          display.value = 'Error';
+        }
+      }
+    </script>
+  </body>
+</html>
